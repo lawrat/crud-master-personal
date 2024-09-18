@@ -1,0 +1,23 @@
+Vagrant.configure("2") do |config|
+    # Machine virtuelle pour la passerelle API
+    config.vm.define "gateway-vm" do |gateway|
+      gateway.vm.box = "ubuntu/bionic64"
+      gateway.vm.network "forwarded_port", guest: 3000, host: 3000
+      gateway.vm.provision "shell", path: "scripts/setup_gateway.sh"
+    end
+  
+    # Machine virtuelle pour l'API d'inventaire
+    config.vm.define "inventory-vm" do |inventory|
+      inventory.vm.box = "ubuntu/bionic64"
+      inventory.vm.network "forwarded_port", guest: 3001, host: 3001
+      inventory.vm.provision "shell", path: "scripts/setup_inventory.sh"
+    end
+  
+    # Machine virtuelle pour l'API de facturation
+    config.vm.define "billing-vm" do |billing|
+      billing.vm.box = "ubuntu/bionic64"
+      billing.vm.network "forwarded_port", guest: 3002, host: 3002
+      billing.vm.provision "shell", path: "scripts/setup_billing.sh"
+    end
+  end
+  
